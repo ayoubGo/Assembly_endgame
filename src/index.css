@@ -13,138 +13,158 @@ body {
     justify-content: center;
 }
 
+main
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 header {
-  text-align: center;
+    text-align: center;
 }
 
 header > h1 {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #F9F4DA;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #F9F4DA;
 }
 
 header > p {
-  font-size: 0.875rem;
-  max-width: 350px;
-  color: #8E8E8E;
+    font-size: 0.875rem;
+    max-width: 350px;
+    color: #8E8E8E;
 }
 
-
-section.game_status{
-
-  display: flex;
-  flex-direction: column;
-  align-items: center ;
-  border-radius: 4px;
-  color :#F9F4DA;
-  margin-block: 30px;
+section.game_status::after {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #F9F4DA;
+    width: 100%;
+    max-width: 350px;
+    min-height: 60px;
+    border-radius: 4px;
+    margin-block: 30px;
 }
 
-section.game_status.won{
-  background-color: #10A95B;
+section.game-status.won {
+    background-color: #10A95B;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #F9F4DA;
+    width: 100%;
+    max-width: 350px;
+    min-height: 60px;
+    border-radius: 4px;
+    margin-block: 30px;
 }
 
-section.game_status.loss{
-  background-color: #BA2A2A;
+section.game-status.lost {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #F9F4DA;
+    width: 100%;
+    max-width: 350px;
+    min-height: 60px;
+    border-radius: 4px;
+    margin-block: 30px;
+    background-color: #BA2A2A;
 }
 
-section.game_status > h2{
-  font-size: 1.25rem;
-  margin: 7px;
+section.game_status > p {
+    margin: 5px;
 }
 
-section.game_status > p{
-  margin :7px;
+section.game_status > h2 {
+    font-size: 1.25rem;
+    margin: 5px
 }
 
-
-section.language-chips{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 5px;
-  max-width: 390px;
-  margin-bottom: 30px;
+section.language-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    max-width: 350px;
+    margin-bottom: 36px;
 }
 
-
-
-span.chip{
-  border-radius: 3px;
-  padding: 4.5px;
-  position: relative;
+span.chip {
+    border-radius: 3px;
+    padding: 4.5px;
+    position: relative;
 }
 
 /* Dimmed overlay with skull on "lost" languages */
 span.chip.lost::before {
-  content: "💀";
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  font-size: 0.85rem;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+    content: "💀";
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    font-size: 0.85rem;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
-section.word{
-  display: flex;
-  justify-content: center;
-  gap: 2px;
+section.word {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    margin-bottom: 20px;
 }
 
-section.word >span{
-  height: 40px;
-  width: 40px;
-  background-color: #323232;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.125rem;
-  border-bottom: 1px solid  #D9D9D9;
-  gap: 2px;
-
+section.word > span {
+    height: 40px;
+    width: 40px;
+    background-color: #323232;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.125rem;
+    border-bottom: 1px solid #F9F4DA;
 }
 
-.keyboard{
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 450px;
-  justify-content: center;
-  gap: 8px;
-  padding-top: 20px;
+section.keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    max-width: 450px;
+    margin-bottom: 36px;
 }
 
-.keyboard > button{
-  height: 35px;
-  width: 35px;
-  background-color: #FCBA29;
-  border: 1px solid #D7D7D7;
-  border-radius: 3px;
-  cursor: pointer;
+section.keyboard > button {
+    height: 35px;
+    width: 35px;
+    background-color: #FCBA29;
+    border: 1px solid #D7D7D7;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
-.keyboard > button.correct{
-  background-color: green;
+section.keyboard > button.correct {
+    background-color: #10A95B;
 }
 
-.keyboard > button.wrong{
-  background-color: red;
+section.keyboard > button.wrong {
+    background-color: #EC5D49;
 }
 
-.new-game{
-  background-color: #11B5E5;
-  border: 1px solid #D7D7D7;
-  border-radius: 4px;
-  width: 225px;
-  height: 40px;
-  margin: 25px 0;
-  padding: 6px 12px;
-  display: block;
-  margin-inline: auto;
-  cursor: pointer;
+button.new-game {
+    background-color: #11B5E5;
+    border: 1px solid #D7D7D7;
+    border-radius: 4px;
+    width: 225px;
+    height: 40px;
+    padding: 6px 12px;
+    display: block;
+    margin-inline: auto;
+    cursor: pointer;
 }

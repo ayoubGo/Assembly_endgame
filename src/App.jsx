@@ -1,73 +1,121 @@
-import Header from "./components/Header"
-import {languages} from "./components/languages"
-import React from "react"
-
-function App() {
+import { useState } from "react"
+import { clsx } from "clsx"
+import { languages } from "./components/languages"
 
 
-  const [currentWord , setCurrentWors] = React.useState("react");
-  const alphabet = "a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z"
-  
-  const [guessedLetters, setGuessedLetters] = React.useState([]);
 
-  function addGeussedLetters (alpha) {
-    setGuessedLetters( prevGuessedLeters => prevGuessedLeters.includes(alpha) ? prevGuessedLeters : [ ...prevGuessedLeters , alpha])
-  }
-  console.log(guessedLetters);
+export default function AssemblyEndgame() {
+    // State values
+    const [currentWord, setCurrentWord] = useState("react")
+    const [guessedLetters, setGuessedLetters] = useState([])
+    
+    // Derived values
+    const wrongGuessCount = guessedLetters.filter(letter => !currentWord.includes(letter)).length;
 
-  //  here we handle the language ships we map over each one and display it
-  const languagelements = languages.map( lang => {
-    const style = {
-      backgroundColor :lang.backgroundColor,
-      color : lang.color 
-
+    const isGameWon = currentWord.split("").every(letter =>  guessedLetters.includes(letter));
+    const isGameLost = wrongGuessCount >= languages.length - 1;
+    
+    const isGameOver = isGameLost || isGameWon;
+    console.log(isGameWon);
+    
+    
+    // Static values
+    const alphabet = "abcdefghijklmnopqrstuvwxyz"
+    
+    function addGuessedLetter(letter) {
+      setGuessedLetters(prevLetters =>
+        prevLetters.includes(letter) ?
+        prevLetters :
+        [...prevLetters, letter]
+      )
     }
-    return (
-      <span  
-      style={style}
-      className="chip" 
-      id={lang.name}
-      >
-        {lang.name}
+
+    const languageElements = languages.map((lang, index) => {
+        const isLanguageLost = index < wrongGuessCount
+        const styles = {
+            backgroundColor: lang.backgroundColor,
+            color: lang.color
+        }
+        
+        return (
+            <span
+                className={`chip ${isLanguageLost ? "lost" : ""}`}
+                style={styles}
+                key={lang.name}
+            >
+                {lang.name}
+            </span>
+        )
+    })
+
+    const letterElements = currentWord.split("").map((letter, index) => (
+        <span key={index}>
+            {guessedLetters.includes(letter) ? letter.toUpperCase() : ""}
         </span>
+    ))
+
+    const keyboardElements = alphabet.split("").map(letter => {
+        const isGuessed = guessedLetters.includes(letter)
+        const isCorrect = isGuessed && currentWord.includes(letter)
+        const isWrong = isGuessed && !currentWord.includes(letter)
+        const className = clsx({
+            correct: isCorrect,
+            wrong: isWrong
+        })
+        
+        return (
+            <button
+                className={className}
+                key={letter}
+                onClick={() => addGuessedLetter(letter)}
+            >
+                {letter.toUpperCase()}
+            </button>
+        )
+    })
+
+    const gameStatusClass = clsx("game-status", {
+      won : isGameWon,
+      lost : isGameLost
+    })
+
+    return (
+        <main>
+            <header>
+                <h1>Assembly: Endgame</h1>
+                <p>Guess the word within 8 attempts to keep the
+                programming world safe from Assembly!</p>
+            </header>
+            <section className={gameStatusClass}>
+              { isGameOver ? (
+                  isGameWon ? (
+                    <>
+                      <h2>You win!</h2>
+                      <p>Well done! 🎉</p>
+                    </>
+                  ) :
+                  (
+                    <>
+                      <h2>Game Over!</h2>
+                      <p>You lose! Better start learning assembly. </p>
+                    </>
+                  )
+                ) :
+                (
+                  null
+                )
+              }
+            </section>
+            <section className="language-chips">
+                {languageElements}
+            </section>
+            <section className="word">
+                {letterElements}
+            </section>
+            <section className="keyboard">
+                {keyboardElements}
+            </section>
+            {isGameOver && <button className="new-game">New Game</button>}
+        </main>
     )
-  }) 
-
-
-  // now we will handle the letters we will show the letters the user showesed
-  const lettersElement = currentWord.split("").map( (letter, index) => (
-    <span key={index}> {letter.toUpperCase()} </span>
-  ))
-
-
-  const keyboardElement = alphabet.split(",").map(alpha => (
-    <button key={alpha} onClick={ () => addGeussedLetters(alpha)}>{alpha.toUpperCase()}</button>
-  ))
-  
-
-
-  return (
-    <>
-    <Header/>
-    <section className="game_status">
-      <h2>You win!</h2>
-      <p>Well done! 🎉</p>      
-    </section>
-
-    <section className="language-chips">
-      {languagelements}
-    </section>
-
-    <section className="word">
-      {lettersElement}
-    </section>
-
-    <section className="keyboard">
-      {keyboardElement}
-    </section>
-    <button className="new-game">New game</button>
-    </>
-  )
 }
-
-export default App
