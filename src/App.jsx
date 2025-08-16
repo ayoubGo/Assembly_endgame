@@ -31,7 +31,7 @@ export default function AssemblyEndgame() {
     }
 
     const languageElements = languages.map((lang, index) => {
-        const isLanguageLost = index < wrongGuessCount
+        const isLanguageLost = index < wrongGuessCount;
         const styles = {
             backgroundColor: lang.backgroundColor,
             color: lang.color
@@ -79,6 +79,31 @@ export default function AssemblyEndgame() {
       lost : isGameLost
     })
 
+    function render_gameStatus()
+    {
+      if(!isGameOver){
+        return null;
+      }
+
+      if(isGameWon)
+        {
+          return(                  
+              <>
+                <h2>You win!</h2>
+                <p>Well done! 🎉</p>
+              </>)
+        }
+      else
+        {
+          return(
+            <>
+              <h2>Game Over!</h2>
+              <p>You lose! Better start learning assembly. </p>
+            </>
+          )
+        }
+    }
+
     return (
         <main>
             <header>
@@ -87,24 +112,7 @@ export default function AssemblyEndgame() {
                 programming world safe from Assembly!</p>
             </header>
             <section className={gameStatusClass}>
-              { isGameOver ? (
-                  isGameWon ? (
-                    <>
-                      <h2>You win!</h2>
-                      <p>Well done! 🎉</p>
-                    </>
-                  ) :
-                  (
-                    <>
-                      <h2>Game Over!</h2>
-                      <p>You lose! Better start learning assembly. </p>
-                    </>
-                  )
-                ) :
-                (
-                  null
-                )
-              }
+              {render_gameStatus()}
             </section>
             <section className="language-chips">
                 {languageElements}
