@@ -1,12 +1,16 @@
 import { useState } from "react"
 import { clsx } from "clsx"
 import { languages } from "./components/languages"
+import { getFarewellText ,getRandomWord} from "./assets/utils"
+
+
+
 
 
 
 export default function AssemblyEndgame() {
     // State values
-    const [currentWord, setCurrentWord] = useState("react")
+    const [currentWord, setCurrentWord] = useState(() => getRandomWord())
     const [guessedLetters, setGuessedLetters] = useState([])
     
     // Derived values
@@ -14,9 +18,12 @@ export default function AssemblyEndgame() {
 
     const isGameWon = currentWord.split("").every(letter =>  guessedLetters.includes(letter));
     const isGameLost = wrongGuessCount >= languages.length - 1;
+    const lastGuessedLetter = guessedLetters[guessedLetters.length - 1];
+    const isLastGuessedIncorrect =  lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
+    console.log(isLastGuessedIncorrect);
     
     const isGameOver = isGameLost || isGameWon;
-    console.log(isGameWon);
+
     
     
     // Static values
@@ -66,6 +73,7 @@ export default function AssemblyEndgame() {
         return (
             <button
                 className={className}
+                disabled = {isGameOver}
                 key={letter}
                 onClick={() => addGuessedLetter(letter)}
             >
@@ -76,13 +84,15 @@ export default function AssemblyEndgame() {
 
     const gameStatusClass = clsx("game-status", {
       won : isGameWon,
-      lost : isGameLost
+      lost : isGameLost,
+      farewell : !isGameOver && isLastGuessedIncorrect
     })
 
     function render_gameStatus()
     {
-      if(!isGameOver){
-        return null;
+      if(!isGameOver && isLastGuessedIncorrect){
+        return <p className="farewell">{getFarewellText(languages[wrongGuessCount -1].name)}</p>
+
       }
 
       if(isGameWon)
@@ -93,7 +103,7 @@ export default function AssemblyEndgame() {
                 <p>Well done! 🎉</p>
               </>)
         }
-      else
+      else if(isGameLost)
         {
           return(
             <>
@@ -102,6 +112,7 @@ export default function AssemblyEndgame() {
             </>
           )
         }
+      return null;
     }
 
     return (
