@@ -2,8 +2,7 @@ import { useState } from "react"
 import { clsx } from "clsx"
 import { languages } from "./components/languages"
 import { getFarewellText ,getRandomWord} from "./assets/utils"
-
-
+import Confetti from "react-confetti"
 
 
 
@@ -37,6 +36,12 @@ export default function AssemblyEndgame() {
       )
     }
 
+    function startNewGame ()
+    {
+      setCurrentWord(getRandomWord());
+      setGuessedLetters([]);
+    }
+
     const languageElements = languages.map((lang, index) => {
         const isLanguageLost = index < wrongGuessCount;
         const styles = {
@@ -55,16 +60,23 @@ export default function AssemblyEndgame() {
         )
     })
 
-    const letterElements = currentWord.split("").map((letter, index) => (
-        <span key={index}>
-            {guessedLetters.includes(letter) ? letter.toUpperCase() : ""}
-        </span>
-    ))
+    const letterElements = currentWord.split("").map((letter, index) => {
+
+      const shouldRevealLetter = isGameLost || guessedLetters.includes(letter);
+      const letterClassName = clsx(isGameLost && !guessedLetters.includes(letter) && "missed-letter")
+      return (
+          <span key={index}
+          className={letterClassName}>
+              {shouldRevealLetter ? letter.toUpperCase() : ""}
+          </span>
+        )
+   })
 
     const keyboardElements = alphabet.split("").map(letter => {
         const isGuessed = guessedLetters.includes(letter)
         const isCorrect = isGuessed && currentWord.includes(letter)
         const isWrong = isGuessed && !currentWord.includes(letter)
+     
         const className = clsx({
             correct: isCorrect,
             wrong: isWrong
@@ -117,6 +129,12 @@ export default function AssemblyEndgame() {
 
     return (
         <main>
+
+            {
+              isGameWon && <Confetti
+                recycle={false} 
+                numberOfPieces={1000}/>
+            }
             <header>
                 <h1>Assembly: Endgame</h1>
                 <p>Guess the word within 8 attempts to keep the
@@ -134,7 +152,7 @@ export default function AssemblyEndgame() {
             <section className="keyboard">
                 {keyboardElements}
             </section>
-            {isGameOver && <button className="new-game">New Game</button>}
+            {isGameOver && <button className="new-game" onClick={startNewGame}>New Game</button>}
         </main>
     )
 }
